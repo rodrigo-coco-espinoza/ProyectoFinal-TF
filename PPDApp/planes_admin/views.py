@@ -20,7 +20,7 @@ def agregar_plan(request):
         form = agregar_plan_form(request.POST)
         if form.is_valid():
             form.save()
-            return  redirect('lista_plan')
+            return redirect('lista_plan')
     else:
         form = agregar_plan_form()
 
