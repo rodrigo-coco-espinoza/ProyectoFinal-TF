@@ -11,6 +11,16 @@ TIPO_CHOICES = (
 )
 
 class OrganismoSectorial(models.Model):
+    """
+    Representa un Organismo Sectorial
+
+    Campos:
+    - nombre: Nombre del Organismo Sectorial.
+    - sigla: Sigla del Organismo Sectorial.
+    - descripcion: Descripción del Organismo Sectorial.
+    - rut: RUT del Organismo Sectorial
+    - direccion: Dirección completa del Organismo Sectorial
+    """
     nombre = models.CharField(max_length=200)
     sigla = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=200)
@@ -21,7 +31,13 @@ class OrganismoSectorial(models.Model):
         return self.nombre
 
 class Plan (models.Model):
-
+    """
+    Representa un Plan de Descontaminación Ambiental
+    Campos:
+    - nombre: Nombre del Plan
+    - año: Año de Aplicación del Plan
+    - resolucion: Resolución en que se oficicializó el Plan
+    """
     class Meta:
         verbose_name_plural = "planes"
 
