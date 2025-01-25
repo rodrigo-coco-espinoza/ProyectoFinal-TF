@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+    .card:hover {
+        background-color: #f0f0f0;
+        cursor: pointer;
+    }
+</style>
+    <h2>Proyecto final. Entrega 1</h2>
+    <p class="fw-bold">Equipo 4:</p>
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-light w-25">John González</li>
+        <li class="list-group-item list-group-item-light w-25">Rodrigo Espinoza</li>
+        <li class="list-group-item list-group-item-light w-25">Pablo Silva</li>
+        <li class="list-group-item list-group-item-light w-25">Marlenne Allendes</li>
+        <li class="list-group-item list-group-item-light w-25">Jorge San Martín</li>
+        <li class="list-group-item list-group-item-light w-25">Carlos González</li>
+        <li class="list-group-item list-group-item-light w-25">Andrea González</li>
+    </ul>
+    <div class="d-flex justify-content-center mt-4">
+        <div class="card mx-2" style="width: 45%;" onclick="window.location.href='/planes_admin/agregar_plan/'">
+            <div class="card-body">
+                <h5 class="card-title">Ingresar Plan</h5>
+                <p class="card-text">Registra un nuevo plan en la base de datos para hacer seguimiento.</p>
+            </div>
+        </div>
+        <div class="card mx-2" style="width: 45%;" onclick="window.location.href='/planes_admin/ver_planes/'">
+            <div class="card-body">
+                <h5 class="card-title">Ver Planes</h5>
+                <p class="card-text">Lista de todos los planes registrados en la base de datos.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

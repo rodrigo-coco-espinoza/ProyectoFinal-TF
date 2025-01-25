@@ -42,7 +42,7 @@ class Plan (models.Model):
         verbose_name_plural = "planes"
 
     nombre = models.CharField(max_length=200)
-    ano = models.IntegerField()
+    anio = models.IntegerField()
     resolucion = models.CharField(max_length=50)
 
 class Medida(models.Model):

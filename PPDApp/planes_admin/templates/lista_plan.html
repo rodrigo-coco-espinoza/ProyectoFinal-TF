@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Lista de Planes</h2>
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Año</th>
+                <th>Resolución</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plan in planes %}
+            <tr>
+                <td>{{ plan.nombre }}</td>
+                <td>{{ plan.anio }}</td>
+                <td>{{ plan.resolucion }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
