@@ -21,6 +21,10 @@ class OrganismoSectorial(models.Model):
         return self.nombre
 
 class Plan (models.Model):
+
+    class Meta:
+        verbose_name_plural = "planes"
+
     nombre = models.CharField(max_length=200)
     ano = models.IntegerField()
     resolucion = models.CharField(max_length=50)
@@ -54,5 +58,6 @@ class PlanMedida(models.Model):
 class PlanComuna(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
+    
     def __str__(self):
         return self.plan.nombre + " - " + self.comuna.nombre
