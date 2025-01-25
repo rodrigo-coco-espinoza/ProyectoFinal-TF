@@ -1,24 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Plan</title>
-</head>
-<body>
-    <h1>Agregar Nuevo Plan</h1>
-    <form action="/planes_admin/agregarplanes/" method="post">
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1 class="mb-4">Agregar Nuevo Plan</h1>
+    <form action="/planes_admin/agregarplanes/" method="post" class="needs-validation" novalidate>
         {% csrf_token %}
-        <label for="nombre">Nombre del Plan:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del Plan:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
+            <div class="invalid-feedback">
+                Por favor ingrese el nombre del plan.
+            </div>
+        </div>
 
-        <label for="ano">Año del Plan:</label>
-        <input type="number" id="ano" name="ano" required></textarea><br><br>
+        <div class="mb-3">
+            <label for="ano" class="form-label">Año del Plan:</label>
+            <input type="number" id="ano" name="ano" class="form-control" required>
+            <div class="invalid-feedback">
+                Por favor ingrese el año del plan.
+            </div>
+        </div>
 
-        <label for="resolucion">Resolución del Plan:</label>
-        <input type="text" id="resolucion" name="resolucion" required><br><br>
+        <div class="mb-3">
+            <label for="resolucion" class="form-label">Resolución del Plan:</label>
+            <input type="text" id="resolucion" name="resolucion" class="form-control" required>
+            <div class="invalid-feedback">
+                Por favor ingrese la resolución del plan.
+            </div>
+        </div>
 
-        <input type="submit" value="Agregar Plan">
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Agregar Plan</button>
+        </div>
     </form>
-</body>
-</html>
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+{% endblock %}
