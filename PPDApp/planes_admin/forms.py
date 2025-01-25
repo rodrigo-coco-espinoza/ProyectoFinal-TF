@@ -4,5 +4,5 @@ from .models import *
 class agregar_plan_form(forms.ModelForm):
     class Meta:
         model = Plan
-        fields = ['nombre', 'ano', 'resolucion']
+        fields = ['nombre', 'anio', 'resolucion']
         

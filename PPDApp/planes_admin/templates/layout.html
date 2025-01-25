@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <title>PPDApp</title>
+
+</head>
+<body>
+    <header>
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-white text-lg font-semibold">PDApp</a>
+            <div class="flex space-x-4">
+                <a href="/ingresar-plan" class="text-gray-300 hover:text-white">Ingresar Plan</a>
+                <a href="/ver-planes" class="text-gray-300 hover:text-white">Ver Planes</a>
+            </div>
+        </div>
+    </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2023 My Application. All rights reserved.</p>
+    </footer>
+</body>
+</html>
