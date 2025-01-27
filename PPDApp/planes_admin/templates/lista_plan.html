@@ -14,7 +14,7 @@
         <tbody>
             {% for plan in planes %}
             <tr>
-                <td>{{ plan.nombre }}</td>
+                <td><a href="/planes_admin/detalle_plan/?plan_id={{ plan.id }}">{{ plan.nombre }}</a></td>
                 <td>{{ plan.anio }}</td>
                 <td>{{ plan.resolucion }}</td>
             </tr>

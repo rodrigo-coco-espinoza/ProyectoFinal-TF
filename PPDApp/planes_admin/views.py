@@ -71,3 +71,16 @@ def lista_plan(request):
     """
     planes = Plan.objects.all()
     return render(request, 'lista_plan.html', {'planes':planes})
+
+@api_view(['GET'])
+def detalle_plan(request):
+    """
+    Devuelve una lista de todos los planes.
+
+    Args:
+        request (Request): Solicitud HTTP.
+    """
+    plan_id=request.GET.get('plan_id')
+    plan = Plan.objects.filter(id=plan_id)
+    print(list(plan)[0])
+    return render(request, 'plan.html', {'plan':list(plan)[0]})
