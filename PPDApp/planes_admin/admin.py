@@ -5,7 +5,6 @@ class ComunaAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Comuna._meta.fields]
 
 admin.site.register(Comuna, ComunaAdmin)
-
 admin.site.register(OrganismoSectorial)
 admin.site.register(Plan)
 admin.site.register(Medida)

@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'planes_admin',
+    'drf_spectacular',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +124,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+# Configuración del esquema de la API
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API de PPDA Manager',
+    'DESCRIPTION': 'Una API para gestionar Planes de Descontaminación Ambiental y visualización de sus estados de avance.',
+    'VERSION': '1.0.0',
+    'ENABLE_DOCSTRINGS': True,
+    'SCHEMA_PATH_PREFIX': '',
+}
