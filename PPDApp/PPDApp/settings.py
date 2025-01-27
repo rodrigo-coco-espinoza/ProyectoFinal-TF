@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'planes_admin',
     'drf_spectacular',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -132,4 +133,6 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'API de PPDA Manager',
     'DESCRIPTION': 'Una API para gestionar Planes de Descontaminación Ambiental y visualización de sus estados de avance.',
     'VERSION': '1.0.0',
+    'ENABLE_DOCSTRINGS': True,
+    'SCHEMA_PATH_PREFIX': '',
 }
