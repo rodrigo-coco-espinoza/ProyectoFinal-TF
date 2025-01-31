@@ -82,5 +82,7 @@ def detalle_plan(request):
     """
     plan_id=request.GET.get('plan_id')
     plan = Plan.objects.filter(id=plan_id)
-    print(list(plan)[0])
-    return render(request, 'plan.html', {'plan':list(plan)[0]})
+    if plan:
+        return render(request, 'plan.html', {'plan':list(plan)[0]})
+
+    return redirect('/planes_admin/ver_planes/')
