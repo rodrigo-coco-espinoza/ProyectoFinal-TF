@@ -1,14 +1,14 @@
 from django.db import models
 
-FRECUENCIA_CHOICES = (
+FRECUENCIA_CHOICES = [
     ('cada 5 años', 'Cada 5 años'),
     ('unica', 'Única'),
     ('anual', 'Anual'),
-)
-TIPO_CHOICES = (
+]
+TIPO_CHOICES = [
     ('regulatoria', 'Regulatoria'),
     ('no regulatoria', 'No regulatoria'),
-)
+]
 
 class OrganismoSectorial(models.Model):
     """
@@ -68,6 +68,7 @@ class Medida(models.Model):
     medio_verificacion = models.CharField(max_length=200)
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
     organismo = models.ForeignKey(OrganismoSectorial, on_delete=models.CASCADE, help_text='Organismo sectorial responsable de reportar la medida')
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE, help_text='Plan')
 
     def __str__(self):
         return self.nombre
