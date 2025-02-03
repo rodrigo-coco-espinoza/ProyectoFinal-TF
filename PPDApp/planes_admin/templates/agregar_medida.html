@@ -1,13 +1,14 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1 class="mb-4">Agregar Nuevo Plan</h1>
+
+    <h1>{{ form.instance.id|yesno:"Actualizar MiModelo,Crear MiModelo" }}</h1>
+
     <form method="post" class="needs-validation" novalidate>
         {% csrf_token %}
         {{ form.as_p }}
-
         <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">Agregar Plan</button>
+            <button type="submit" class="btn btn-primary">Grabar</button>
         </div>
     </form>
 ,<div class="justify-content-end">

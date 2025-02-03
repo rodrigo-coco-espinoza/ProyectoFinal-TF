@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.text import normalize_newlines
+
 from .models import *
 from .forms import *
 from django.http import JsonResponse
@@ -27,24 +29,6 @@ def home(request):
     request=agregar_plan_form,  # Esquema del formulario para la solicitud.
     responses={200: {"type": "string", "example": "Plan agregado correctamente"}}
 )
-@api_view(['GET', 'POST'])
-def agregar_plan(request):
-    """
-    Despliega un formulario para agregar un nuevo plan.
-
-    Args:
-        request (Request): Solicitud HTTP.
-        """
-    if request.method == "POST":
-        form = agregar_plan_form(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('lista_plan')
-    else:
-        form = agregar_plan_form()
-
-    return render(request, 'agregar_plan.html', {'form': form})
-
 @extend_schema(
     summary="Listar planes",
     description="Devuelve una lista de todos los planes en formato JSON.",
@@ -73,16 +57,80 @@ def lista_plan(request):
     return render(request, 'lista_plan.html', {'planes':planes})
 
 @api_view(['GET'])
-def detalle_plan(request):
+def detalle_plan(request, pk=None):
     """
     Devuelve una lista de todos los planes.
 
     Args:
         request (Request): Solicitud HTTP.
     """
-    plan_id=request.GET.get('plan_id')
-    plan = Plan.objects.filter(id=plan_id)
+    if pk:
+        try:
+            plan = get_object_or_404(Plan, pk=pk)
+            print(f'Plan obtenido: {plan}')
+        except Http404:
+            print('No se encontró el plan')
+
+    else:
+        plan = None
+
+    print(plan.__dict__)
     if plan:
-        return render(request, 'plan.html', {'plan':list(plan)[0]})
+        medidas = list(Medida.objects.filter(plan=plan.id))
+        return render(request, 'plan.html', {'plan':plan.__dict__, 'medidas': list(medidas)})
 
     return redirect('/planes_admin/ver_planes/')
+
+@api_view(['GET', 'POST'])
+def agregar_plan(request):
+    """
+    Despliega un formulario para agregar un nuevo plan.
+
+    Args:
+        request (Request): Solicitud HTTP.
+        """
+    if request.method == "POST":
+        form = agregar_plan_form(request.POST)
+        if form.is_valid():
+            instancia=form.save()
+            print(instancia.id)
+            return redirect("/planes_admin/detalle_plan/"+str(instancia.id))
+    else:
+        form = agregar_plan_form()
+
+    return render(request, 'agregar_plan.html', {'form': form})
+
+
+@api_view(['GET', 'POST'])
+def agregar_medida(request, pk=None):
+    """
+    Despliega un formulario para agregar una nueva medida a un plan.
+
+    Args:
+        request (Request): Solicitud HTTP.
+        """
+    if pk:
+        try:
+            medida = get_object_or_404(Medida, pk=pk)
+            print(f'medida obtenida: {medida}')
+        except Http404:
+            print('No se encontró la medida')
+
+    else:
+        medida = None
+
+    if request.method == "POST":
+        form = agregar_medida_form(request.POST, instance=medida)
+        if form.is_valid():
+            medida=form.save()
+        else:
+            print(form.errors)
+        return redirect("/planes_admin/detalle_plan/"+str(medida.plan_id))
+    else:
+        plan_id=request.GET.get('plan_id')
+        if plan_id:
+            form = agregar_medida_form(initial={"plan":plan_id})
+        else:
+            form = agregar_medida_form(instance=medida)
+
+        return render(request, 'agregar_medida.html', {'form': form})
