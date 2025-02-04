@@ -2,47 +2,94 @@
 
 {% block content %}
     <h1 class="mb-4">Agregar Nuevo Plan</h1>
+
     <form method="post" class="needs-validation" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del Plan:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required autocomplete="off" autofocus>
+            <div class="invalid-feedback">
+                Por favor ingrese el nombre del plan.
+            </div>
+        </div>
 
-        <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">Agregar Plan</button>
+        <div class="mb-3">
+            <label for="anio" class="form-label">Año del Plan:</label>
+            <input type="number" id="anio" name="anio" class="form-control" required autocomplete="off">
+            <div class="invalid-feedback" id="number-error">
+                Por favor ingrese el año del plan.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="resolucion" class="form-label">Resolución del Plan:</label>
+            <input type="text" id="resolucion" name="resolucion" class="form-control" required autocomplete="off">
+            <div class="invalid-feedback">
+                Por favor ingrese la resolución del plan.
+            </div>
+        </div>
+        <div class="d-flex justify-content-end gap-2">
+            <div onclick="window.location.href='/'">
+                <button class="btn btn-secondary" href="/planes_admin/ver_planes/" role="button">Volver</button>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Agregar Plan</button>
+            </div>
         </div>
     </form>
-,<div class="justify-content-end">
-     <style>
-        .btn-align-right {
-            float: right;
-            margin-right: 10px; /* Ajusta según tu preferencia */
-        }
-    </style>
-    <div class="card btn-align-right"  onclick="window.location.href='/planes_admin/ver_planes/' ">
-        <a class="btn btn-primary btn-align-right" href="#" role="button">Volver</a>
-    </div>
-
-</div>
 
     <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function () {
-            'use strict'
+            'use strict';
+            let forms = document.querySelectorAll('.needs-validation');
 
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    const nombre = document.getElementById("nombre");
+                    const fecha = document.getElementById("anio");
+                    const resolucion = document.getElementById("resolucion");
+                    const erroranio = document.getElementById("number-error");
+                    let anio = parseInt(fecha.value);
+                    let isValid = true; // Aseguramos que inicie como válido
 
-            // Loop over them and prevent submission
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
+                    // Validación para el campo de Año
+                    if (isNaN(anio) || anio < 2000 || anio > 2025) {
+                        fecha.classList.add("is-invalid");
+                        fecha.classList.remove("is-valid");
+                        erroranio.innerText = "Debes ingresar un año válido entre 2000 y 2025.";
+                        isValid = false;
+                    } else {
+                        fecha.classList.add("is-valid");
+                        fecha.classList.remove("is-invalid");
+                    }
 
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
+                    // Validación para el campo de Nombre
+                    if (nombre.value === "") {
+                        nombre.classList.add("is-invalid");
+                        nombre.classList.remove("is-valid");
+                        isValid = false;
+                    } else {
+                        nombre.classList.add("is-valid");
+                        nombre.classList.remove("is-invalid");
+                    }
+
+                    // Validación para el campo de Resolución
+                    if (resolucion.value === "") {
+                        resolucion.classList.add("is-invalid");
+                        resolucion.classList.remove("is-valid");
+                        isValid = false;
+                    } else {
+                        resolucion.classList.add("is-valid");
+                        resolucion.classList.remove("is-invalid");
+                    }
+                    if (!isValid) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else{
+
+                    form.classList.add('was-validated');} // Añadir clase 'was-validated' para los estilos de validación de Bootstrap
+                }, false);
+            });
+        })();
     </script>
 {% endblock %}

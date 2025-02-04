@@ -1,9 +1,11 @@
+from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.text import normalize_newlines
 
 from .models import *
 from .forms import *
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
@@ -54,7 +56,15 @@ def lista_plan(request):
         request (Request): Solicitud HTTP.
     """
     planes = Plan.objects.all()
-    return render(request, 'lista_plan.html', {'planes':planes})
+
+    # Paginación: dividir los planes en páginas de 10 elementos
+    paginator = Paginator(planes, 10)
+
+    # Obtener el número de página desde la solicitud GET
+    page = request.GET.get('page', 1)  # Si no se pasa ningún número de página, se usa la página 1 por defecto
+    page_obj = paginator.get_page(page)
+
+    return render(request, 'lista_plan.html', {'page_obj': page_obj})
 
 @api_view(['GET'])
 def detalle_plan(request, pk=None):
@@ -99,7 +109,6 @@ def agregar_plan(request):
         form = agregar_plan_form()
 
     return render(request, 'agregar_plan.html', {'form': form})
-
 
 @api_view(['GET', 'POST'])
 def agregar_medida(request, pk=None):

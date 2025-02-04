@@ -1,37 +1,60 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Lista de Planes</h2>
-    <table class="table table-striped">
-        <thead class="table-dark">
+    <div class="container mt-4">
+        <h2>Lista de Planes</h2>
+        <table class="table table-striped">
+            <thead class="table-dark">
             <tr>
                 <th>Nombre</th>
                 <th>Año</th>
                 <th>Resolución</th>
             </tr>
-        </thead>
-        <tbody>
-            {% for plan in planes %}
-            <tr>
-                <td><a href="/planes_admin/detalle_plan/{{ plan.id }}">{{ plan.nombre }}</a></td>
-                <td>{{ plan.anio }}</td>
-                <td>{{ plan.resolucion }}</td>
-            </tr>
+            </thead>
+            <tbody>
+            {% for plan in page_obj %}
+                <tr>
+                    <td><a href="/planes_admin/detalle_plan/{{ plan.id }}">{{ plan.nombre }}</a></td>
+                    <td>{{ plan.anio }}</td>
+                    <td>{{ plan.resolucion }}</td>
+                </tr>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
-,<div class="justify-content-end">
-     <style>
-        .btn-align-right {
-            float: right;
-            margin-right: 10px; /* Ajusta según tu preferencia */
-        }
-    </style>
-    <div class="card btn-align-right"  onclick="window.location.href='/planes_admin/agregar_plan/' ">
-        <a class="btn btn-primary btn-align-right" href="#" role="button">Crear plan</a>
+            </tbody>
+        </table>
     </div>
+    <div class="justify-content-end">
+        <style>
+            .btn-align-right {
+                float: right;
+                margin-right: 10px; /* Ajusta según tu preferencia */
+            }
+        </style>
+        <div class="d-flex justify-content-end gap-2">
+            <div onclick="window.location.href='/'">
+                <button class="btn btn-secondary" href="/planes_admin/ver_planes/" role="button">Volver</button>
+            </div>
 
+            <div onclick="window.location.href='/planes_admin/agregar_plan/'">
+                <button type="submit" class="btn btn-primary">Agregar Plan</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Primera</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+        {% endif %}
+    </span>
 </div>
 {% endblock %}
