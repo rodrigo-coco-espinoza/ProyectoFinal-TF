@@ -5,7 +5,7 @@ from django.utils.text import normalize_newlines
 
 from .models import *
 from .forms import *
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
@@ -65,6 +65,7 @@ def lista_plan(request):
     page_obj = paginator.get_page(page)
 
     return render(request, 'lista_plan.html', {'page_obj': page_obj})
+
 @api_view(['GET'])
 def detalle_plan(request, pk=None):
     """
@@ -108,7 +109,6 @@ def agregar_plan(request):
         form = agregar_plan_form()
 
     return render(request, 'agregar_plan.html', {'form': form})
-
 
 @api_view(['GET', 'POST'])
 def agregar_medida(request, pk=None):

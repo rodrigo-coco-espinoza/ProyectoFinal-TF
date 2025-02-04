@@ -7,22 +7,15 @@
     <form method="post" class="needs-validation" novalidate>
         {% csrf_token %}
         {{ form.as_p }}
-        <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">Grabar</button>
+        <div class="d-flex justify-content-end gap-2">
+            <div>
+                <button type="submit" class="btn btn-primary">Grabar</button>
+            </div>
+            <div class="btn-align-right" onclick="window.location.href='/planes_admin/ver_planes/' ">
+                <a class="btn btn-secondary" href="#" role="button">Volver</a>
+            </div>
         </div>
     </form>
-,<div class="justify-content-end">
-     <style>
-        .btn-align-right {
-            float: right;
-            margin-right: 10px; /* Ajusta según tu preferencia */
-        }
-    </style>
-    <div class="card btn-align-right"  onclick="window.location.href='/planes_admin/ver_planes/' ">
-        <a class="btn btn-primary btn-align-right" href="#" role="button">Volver</a>
-    </div>
-
-</div>
 
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields

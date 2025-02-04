@@ -14,7 +14,7 @@
             <tbody>
             {% for plan in page_obj %}
                 <tr>
-                    <td><a href="/planes_admin/detalle_plan/?plan_id={{ plan.id }}">{{ plan.nombre }}</a></td>
+                    <td><a href="/planes_admin/detalle_plan/{{ plan.id }}">{{ plan.nombre }}</a></td>
                     <td>{{ plan.anio }}</td>
                     <td>{{ plan.resolucion }}</td>
                 </tr>

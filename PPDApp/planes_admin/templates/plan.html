@@ -28,16 +28,13 @@
                 margin-right: 10px; /* Ajusta según tu preferencia */
             }
         </style>
-        <div class="card btn-align-right" onclick="window.location.href='/planes_admin/ver_planes/' ">
-            <a class="btn btn-primary" href="#" role="button">Volver</a>
-        </div>
         </tbody>
-    </table>
-</div>
-<div class="container mt-4">
-    <h2>Medidas</h2>
-    <table class="table table-striped">
-        <thead class="table-dark">
+        </table>
+    </div>
+    <div class="container mt-4">
+        <h2>Medidas</h2>
+        <table class="table table-striped">
+            <thead class="table-dark">
             <tr>
                 <th>Referencia</th>
                 <th>Nombre</th>
@@ -49,37 +46,41 @@
                 <th>Organismo</th>
                 <th>Modificar</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
+
+
             {% for medida in medidas %}
-            <tr>
-                <td>{{ medida.referencia }}</td>
-                <td>{{ medida.nombre }}</td>
-                <td>{{ medida.indicador }}</td>
-                <td>{{ medida.formula }}</td>
-                <td>{{ medida.frecuencia }}</td>
-                <td>{{ medida.medio_verificacion }}</td>
-                <td>{{ medida.tipo }}</td>
-                <td>{{ medida.organismo }}</td>
-                <td><a href="/planes_admin/modificar_medida/{{medida.id}}">Modificar</a></td>
-            </tr>
+
+                <tr>
+                    <td>{{ medida.referencia }}</td>
+                    <td>{{ medida.nombre }}</td>
+                    <td>{{ medida.indicador }}</td>
+                    <td>{{ medida.formula }}</td>
+                    <td>{{ medida.frecuencia }}</td>
+                    <td>{{ medida.medio_verificacion }}</td>
+                    <td>{{ medida.tipo }}</td>
+                    <td>{{ medida.organismo }}</td>
+                    <td><a href="/planes_admin/modificar_medida/{{ medida.id }}">Modificar</a></td>
+                </tr>
             {% endfor %}
-        </tbody>
-    </table>
-    <div class="card btn-align-right"  onclick="window.location.href='/planes_admin/agregar_medida/?plan_id={{plan.id}}' ">
-        <a class="btn btn-primary btn-align-right" href="#" role="button">Agregar Medida</a>
-    </div>
-</div>
-<div class="justify-content-end">
-     <style>
-        .btn-align-right {
-            float: right;
-            margin-right: 10px; /* Ajusta según tu preferencia */
-        }
-    </style>
-    <div class="card btn-align-right"  onclick="window.location.href='/planes_admin/ver_planes/' ">
-        <a class="btn btn-primary btn-align-right" href="#" role="button">Volver</a>
-    </div>
+
+            </tbody>
+
+        </table>
+                {% if medidas|length < 1 %}
+                <p>No se han agregado medidas</p>
+            {% endif %}
+        <div class=" justify-content-end">
+            <div class="card btn-align-right"
+                 onclick="window.location.href='/planes_admin/agregar_medida/?plan_id={{ plan.id }}' ">
+                <a class="btn btn-primary" href="#" role="button">Agregar Medida</a>
+            </div>
+            <div class="card btn-align-right" onclick="window.location.href='/planes_admin/ver_planes/' ">
+                <a class="btn btn-secondary" href="#" role="button">Volver</a>
+            </div>
+        </div>
+
 
     </div>
 {% endblock %}
