@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>{{ form.instance.id|yesno:"Actualizar MiModelo,Crear MiModelo" }}</h1>
+
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Grabar</button>
+        </div>
+    </form>
+,<div class="justify-content-end">
+     <style>
+        .btn-align-right {
+            float: right;
+            margin-right: 10px; /* Ajusta según tu preferencia */
+        }
+    </style>
+    <div class="card btn-align-right"  onclick="window.location.href='/planes_admin/ver_planes/' ">
+        <a class="btn btn-primary btn-align-right" href="#" role="button">Volver</a>
+    </div>
+
+</div>
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+{% endblock %}
