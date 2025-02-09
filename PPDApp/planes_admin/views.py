@@ -8,8 +8,9 @@ from .forms import *
 from django.http import JsonResponse, Http404
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from django.contrib.auth.decorators import login_required,permission_required
 
-# Create your views here.
+
 
 @extend_schema(
     summary="Página de inicio",
@@ -47,6 +48,8 @@ def home(request):
         }
     }
 )
+@login_required
+@permission_required('user.crear_plan', raise_exception=True)
 @api_view(['GET'])
 def lista_plan(request):
     """
@@ -66,6 +69,8 @@ def lista_plan(request):
 
     return render(request, 'lista_plan.html', {'page_obj': page_obj})
 
+@login_required
+@permission_required('user.crear_plan', raise_exception=True)
 @api_view(['GET'])
 def detalle_plan(request, pk=None):
     """
@@ -91,6 +96,8 @@ def detalle_plan(request, pk=None):
 
     return redirect('/planes_admin/ver_planes/')
 
+@login_required
+@permission_required('user.crear_plan', raise_exception=True)
 @api_view(['GET', 'POST'])
 def agregar_plan(request):
     """
@@ -110,6 +117,10 @@ def agregar_plan(request):
 
     return render(request, 'agregar_plan.html', {'form': form})
 
+# @login_reuired exije que el usuario este conectado para acceder a la vista, si no da error
+# @permission_required exije ademas que el usuario tenga el permiso indicado, los permisos estan en user/models.py
+@login_required
+@permission_required('user.crear_plan', raise_exception=True)
 @api_view(['GET', 'POST'])
 def agregar_medida(request, pk=None):
     """
