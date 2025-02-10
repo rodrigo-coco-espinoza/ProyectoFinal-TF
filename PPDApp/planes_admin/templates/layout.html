@@ -46,12 +46,29 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="/planes_admin/agregar_plan/">Ingresar Plan</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/planes_admin/ver_planes/">Ver Planes</a>
                     </li>
+                    {% endif %}
+                    {% if perms.user.crear_plan %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">{{ user.email }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn nav-link">Logout</button>
+                        </form>
+                    </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -64,9 +81,11 @@
 
 
 <footer class="footer mt-3 py-3 bg-dark text-white">
+    {% if perms.user.crear_plan %}
     <div class="container text-center">
         <span>&copy; 2025 PPDApp. Todos los derechos reservados.</span>
     </div>
+    {% endif %}
 </footer>
 </body>
 </html>

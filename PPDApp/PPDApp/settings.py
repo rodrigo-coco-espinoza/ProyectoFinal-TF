@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'planes_admin',
     'drf_spectacular',
     'rest_framework',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,15 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# settings.py
+AUTH_USER_MODEL = 'user.Usuario'
+LOGIN_URL = '/login/'
+
+# settings.py
+LOGIN_REDIRECT_URL = '/'  # Redirigir al perfil después de iniciar sesión
+LOGOUT_REDIRECT_URL = '/'  # Redirigir a la página de inicio después de cerrar sesión
+
 
 
 # Password validation

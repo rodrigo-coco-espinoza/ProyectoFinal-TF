@@ -8,4 +8,5 @@ urlpatterns = [
     path('detalle_plan/<int:pk>', views.detalle_plan, name='detalle_plan'),
     path('agregar_medida/', views.agregar_medida, name='agregar_medida'),
     path('modificar_medida/<int:pk>/', views.agregar_medida, name='modificar_medida'),
+
 ]

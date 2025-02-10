@@ -1,0 +1,30 @@
+<!-- user/templates/user/login.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iniciar Sesión</title>
+</head>
+<body>
+    <h1>Iniciar Sesión</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Iniciar Sesión</button>
+    </form>
+    {% if form.errors %}
+        <div style="color: red;">
+            <h2>Errores:</h2>
+            <ul>
+                {% for field in form %}
+                    {% if field.errors %}
+                        <li>{{ field.label }}: {{ field.errors }}</li>
+                    {% endif %}
+                {% endfor %}
+                {% if form.non_field_errors %}
+                    <li>Errores generales: {{ form.non_field_errors }}</li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+</body>
+</html>
