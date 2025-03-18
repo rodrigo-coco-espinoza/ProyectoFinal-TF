@@ -10,7 +10,29 @@ from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from django.contrib.auth.decorators import login_required,permission_required
 
+from rest_framework import viewsets, permissions
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from .models import Plan, OrganismoSectorial, Medida
+from .serializers import PlanSerializer, OrganismoSerializer, MedidaSerializer
 
+class PlanViewSet(viewsets.ModelViewSet):
+    queryset = Plan.objects.all()
+    serializer_class = PlanSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [BasicAuthentication]
+
+class MedidaViewSet(viewsets.ModelViewSet):
+    queryset = Medida.objects.all()
+    serializer_class = MedidaSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [BasicAuthentication]
+
+class OrganismoViewSet(viewsets.ModelViewSet):
+    queryset = OrganismoSectorial.objects.all()
+    serializer_class = OrganismoSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [BasicAuthentication]
 
 @extend_schema(
     summary="Página de inicio",
