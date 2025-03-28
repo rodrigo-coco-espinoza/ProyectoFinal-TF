@@ -19,5 +19,5 @@ class UserSerializer(serializers.ModelSerializer):
 
 class OrganismoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = OrganismoSectorial
+        model = Organismo
         fields = '__all__'

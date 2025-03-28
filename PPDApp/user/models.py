@@ -1,6 +1,9 @@
 # user/models.py
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager,User, Permission
+from django.contrib.contenttypes.models import ContentType
+
 from django.db import models
+from planes_admin.models import Organismo
 
 class UsuarioManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -19,17 +22,20 @@ class UsuarioManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
+    list_display = ('email', 'nombre', 'apellido')
+
     email = models.EmailField(unique=True)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-    is_planificador = models.BooleanField(default=False)
-    is_responsable = models.BooleanField(default=False)
-    is_aprobador = models.BooleanField(default=False)
-
     clave_unica = models.CharField(max_length=100)
+    organismo = models.ForeignKey('planes_admin.Organismo',on_delete=models.SET_NULL,
+        null=True,                 # Permite valores nulos en la base de datos
+        blank=True                 # Permite dejar este campo vacío en formularios
+    )
+
 
     objects = UsuarioManager()
 

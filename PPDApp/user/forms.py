@@ -10,4 +10,4 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = Usuario
-        fields = ('email', 'nombre', 'apellido','is_planificador','is_aprobador','is_responsable')
+        fields = ('email', 'nombre', 'apellido','organismo')
