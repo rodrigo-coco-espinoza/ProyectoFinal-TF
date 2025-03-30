@@ -15,8 +15,9 @@ from django.contrib.auth.decorators import login_required,permission_required
 from rest_framework import viewsets, permissions
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import Plan, Organismo, Medida
-from .serializers import PlanSerializer, OrganismoSerializer, MedidaSerializer
+from .models import Plan, Organismo, Medida, PlanMedida
+from .serializers import PlanSerializer, OrganismoSerializer, MedidaSerializer, PlanMedidaSerializer
+
 
 class PlanViewSet(viewsets.ModelViewSet):
     queryset = Plan.objects.all()
@@ -33,6 +34,12 @@ class MedidaViewSet(viewsets.ModelViewSet):
 class OrganismoViewSet(viewsets.ModelViewSet):
     queryset = Organismo.objects.all()
     serializer_class = OrganismoSerializer
+    permission_classes = [DjangoModelPermissionsWithView]
+    authentication_classes = [BasicAuthentication]
+
+class PlanMedidaViewSet(viewsets.ModelViewSet):
+    queryset = PlanMedida.objects.all()
+    serializer_class = PlanMedidaSerializer
     permission_classes = [DjangoModelPermissionsWithView]
     authentication_classes = [BasicAuthentication]
 

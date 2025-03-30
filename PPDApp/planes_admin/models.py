@@ -135,4 +135,4 @@ class Avance(models.Model):
             MaxValueValidator(100)  # Valor máximo permitido: 100
         ]
     )
-    medida = models.OneToOneField(Medida, on_delete=models.CASCADE, help_text='Medida')
+    medida = models.OneToOneField(PlanMedida, on_delete=models.CASCADE, help_text='Medida')
