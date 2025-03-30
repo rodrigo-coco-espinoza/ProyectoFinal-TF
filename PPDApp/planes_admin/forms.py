@@ -8,7 +8,7 @@ class agregar_plan_form(forms.ModelForm):
 
 class agregar_medida_form(forms.ModelForm):
     id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
-    organismo = forms.ModelChoiceField(queryset=OrganismoSectorial.objects.all())
+    organismo = forms.ModelChoiceField(queryset=Organismo.objects.all())
     plan = forms.ModelChoiceField(queryset=Plan.objects.all(),widget=forms.HiddenInput())
 
     class Meta:

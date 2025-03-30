@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.text import normalize_newlines
+from rest_framework.permissions import DjangoModelPermissions
+from .permissions import DjangoModelPermissionsWithView
 
 from .models import *
 from .forms import *
@@ -13,25 +15,25 @@ from django.contrib.auth.decorators import login_required,permission_required
 from rest_framework import viewsets, permissions
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import Plan, OrganismoSectorial, Medida
+from .models import Plan, Organismo, Medida
 from .serializers import PlanSerializer, OrganismoSerializer, MedidaSerializer
 
 class PlanViewSet(viewsets.ModelViewSet):
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [DjangoModelPermissionsWithView]
     authentication_classes = [BasicAuthentication]
 
 class MedidaViewSet(viewsets.ModelViewSet):
     queryset = Medida.objects.all()
     serializer_class = MedidaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [DjangoModelPermissionsWithView]
     authentication_classes = [BasicAuthentication]
 
 class OrganismoViewSet(viewsets.ModelViewSet):
-    queryset = OrganismoSectorial.objects.all()
+    queryset = Organismo.objects.all()
     serializer_class = OrganismoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [DjangoModelPermissionsWithView]
     authentication_classes = [BasicAuthentication]
 
 @extend_schema(

@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import AbstractUser
 
 FRECUENCIA_CHOICES = [
     ('cada 5 años', 'Cada 5 años'),
@@ -10,7 +12,7 @@ TIPO_CHOICES = [
     ('no regulatoria', 'No regulatoria'),
 ]
 
-class OrganismoSectorial(models.Model):
+class Organismo(models.Model):
     """
     Representa un Organismo Sectorial
 
@@ -67,7 +69,7 @@ class Medida(models.Model):
     frecuencia = models.CharField(max_length=50, choices=FRECUENCIA_CHOICES)
     medio_verificacion = models.CharField(max_length=200)
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
-    organismo = models.ForeignKey(OrganismoSectorial, on_delete=models.CASCADE, help_text='Organismo sectorial responsable de reportar la medida')
+    organismo = models.ForeignKey(Organismo, on_delete=models.CASCADE, help_text='Organismo sectorial responsable de reportar la medida')
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE, help_text='Plan')
 
     def __str__(self):
@@ -116,3 +118,21 @@ class PlanComuna(models.Model):
     
     def __str__(self):
         return self.plan.nombre + " - " + self.comuna.nombre
+
+class Avance(models.Model):
+    """
+    
+    Representa el avance de una medida especifica perteneciente a un plan, tiene una relacion 1 a 1 con Medidas
+    
+    Atributos:
+    - avance (AvanceMedida): Identificador unico
+    - porcentaje (int): Porcentaje de avance de la medida, valor entre 0 y 100
+    - medida (Medida): Medida asociada al avance
+    
+    """
+    porcentaje = models.IntegerField(validators=[
+            MinValueValidator(0),  # Valor mínimo permitido: 0
+            MaxValueValidator(100)  # Valor máximo permitido: 100
+        ]
+    )
+    medida = models.OneToOneField(Medida, on_delete=models.CASCADE, help_text='Medida')
