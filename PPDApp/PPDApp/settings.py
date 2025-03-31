@@ -86,7 +86,7 @@ DATABASES = {
 
 # settings.py
 AUTH_USER_MODEL = 'user.Usuario'
-LOGIN_URL = '/login/'
+LOGIN_URL = '/user/login/'
 
 # settings.py
 LOGIN_REDIRECT_URL = '/'  # Redirigir al perfil después de iniciar sesión
