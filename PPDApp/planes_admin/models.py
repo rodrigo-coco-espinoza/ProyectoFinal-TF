@@ -48,6 +48,16 @@ class Plan (models.Model):
     anio = models.IntegerField()
     resolucion = models.CharField(max_length=50, help_text="Resolucion oficial del PPDA")
 
+    def calcular_porcentaje_avance(self):
+        """
+        Calcula el porcentaje de avance del plan basado en los reportes de las medidas asociadas.
+        """
+        total_medidas = self.planmedida_set.count()
+        if total_medidas == 0:
+            return 0
+        medidas_validas = sum(1 for medida in self.planmedida_set.all() if hasattr(medida, 'reportemedida') and medida.reportemedida.medio_verificacion)
+        return (medidas_validas / total_medidas) * 100
+
 class Medida(models.Model):
     """
     Representa una medida de un PPDA.
@@ -60,7 +70,6 @@ class Medida(models.Model):
     - frecuencia (str): Frecuencia de reporte del indicador de la medida.
     - medio_verificacion (str): Medios de verificación del indicador de la medida.
     - tipo (str): Tipo de la medida.
-    - organismo (OrganismoSectorial): Organismo sectorial responsable de la medida.
     """
     referencia = models.CharField(max_length=50)
     nombre = models.CharField(max_length=200)
@@ -69,8 +78,7 @@ class Medida(models.Model):
     frecuencia = models.CharField(max_length=50, choices=FRECUENCIA_CHOICES)
     medio_verificacion = models.CharField(max_length=200)
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES)
-    organismo = models.ForeignKey(Organismo, on_delete=models.CASCADE, help_text='Organismo sectorial responsable de reportar la medida')
-    plan = models.ForeignKey(Plan, on_delete=models.CASCADE, help_text='Plan')
+    #plan = models.ManyToManyField(Plan, on_delete=models.CASCADE, help_text='Plan')
 
     def __str__(self):
         return self.nombre
@@ -101,6 +109,7 @@ class PlanMedida(models.Model):
     """
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     medida = models.ForeignKey(Medida, on_delete=models.CASCADE)
+    periodo = models.IntegerField(validators=[MinValueValidator(2020)], help_text="Año de ejecución de la medida", null=True, blank=True)
 
     def __str__(self):
         return self.plan.nombre + " - " + self.medida.nombre
@@ -112,27 +121,30 @@ class PlanComuna(models.Model):
     Atributos:
     - plan (Plan): Identificador único de un plan.
     - comuna (Comuna): Identificador único de la comuna.
+    - organismo (Organismo): Organismo sectorial responsable de reportar la medida.
     """
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     comuna = models.ForeignKey(Comuna, on_delete=models.CASCADE)
+    organismo = models.ForeignKey(Organismo, on_delete=models.CASCADE, help_text='Organismo sectorial responsable de reportar la medida')
     
     def __str__(self):
         return self.plan.nombre + " - " + self.comuna.nombre
 
-class Avance(models.Model):
-    """
-    
-    Representa el avance de una medida especifica perteneciente a un plan, tiene una relacion 1 a 1 con Medidas
+class ReporteMedida(models.Model):
+    """ 
+    Almacena los reportes de avance que un organismo sectorial entrega para una medida de un plan. Se considera más de un reporte por medida.
     
     Atributos:
-    - avance (AvanceMedida): Identificador unico
-    - porcentaje (int): Porcentaje de avance de la medida, valor entre 0 y 100
-    - medida (Medida): Medida asociada al avance
-    
+    - medida (PlanMedida): Identificador único de la medida.
+    - fecha (DateField): Fecha de entrega del reporte.
+    - medio_verificacion (FileField): Archivo del reporte.
+    - estado (str): Estado del reporte (validado o no validado).
+    - observaciones (str): Observaciones del reporte.
     """
-    porcentaje = models.IntegerField(validators=[
-            MinValueValidator(0),  # Valor mínimo permitido: 0
-            MaxValueValidator(100)  # Valor máximo permitido: 100
-        ]
-    )
+
     medida = models.OneToOneField(PlanMedida, on_delete=models.CASCADE, help_text='Medida')
+    fecha = models.DateField()
+    medio_verificacion = models.FileField(upload_to='reportes/')
+    #estado = models.CharField(max_length=50, choices=["validado", "no validado"], default="no validado")
+    observaciones = models.CharField(max_length=200, blank=True, null=True)
+    

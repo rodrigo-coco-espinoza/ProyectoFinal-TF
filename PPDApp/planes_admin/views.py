@@ -16,32 +16,41 @@ from rest_framework import viewsets, permissions
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Plan, Organismo, Medida, PlanMedida
-from .serializers import PlanSerializer, OrganismoSerializer, MedidaSerializer, PlanMedidaSerializer
+from .serializers import PlanSerializer, OrganismoSerializer, MedidaSerializer, PlanMedidaSerializer, ReporteMedidaSerializer
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 class PlanViewSet(viewsets.ModelViewSet):
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
-    permission_classes = [DjangoModelPermissionsWithView]
-    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    #authentication_classes = [BasicAuthentication]
 
 class MedidaViewSet(viewsets.ModelViewSet):
     queryset = Medida.objects.all()
     serializer_class = MedidaSerializer
-    permission_classes = [DjangoModelPermissionsWithView]
-    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    #authentication_classes = [BasicAuthentication]
 
 class OrganismoViewSet(viewsets.ModelViewSet):
     queryset = Organismo.objects.all()
     serializer_class = OrganismoSerializer
-    permission_classes = [DjangoModelPermissionsWithView]
-    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    #authentication_classes = [BasicAuthentication]
 
 class PlanMedidaViewSet(viewsets.ModelViewSet):
     queryset = PlanMedida.objects.all()
     serializer_class = PlanMedidaSerializer
-    permission_classes = [DjangoModelPermissionsWithView]
-    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated]
+    #authentication_classes = [BasicAuthentication]
+
+class ReporteMedidaViewSet(viewsets.ModelViewSet):
+    queryset = ReporteMedida.objects.all()
+    serializer_class = ReporteMedidaSerializer
+    permission_classes = [IsAuthenticated]
+    #authentication_classes = [BasicAuthentication]
 
 @extend_schema(
     summary="Página de inicio",
