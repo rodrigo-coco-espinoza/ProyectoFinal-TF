@@ -8,13 +8,14 @@ def crear_roles(apps, schema_editor):
     roles = {
         "Administrador": ["add_comuna", "change_comuna", "delete_comuna", "view_comuna",
                           "add_organismo", "change_organismo", "delete_organismo", "view_organismo",
-                          "add_comuna", "change_comuna", "delete_comuna", "view_comuna"
+                          "add_comuna", "change_comuna", "delete_comuna", "view_comuna",
+                          "add_medida", "change_medida", "delete_medida", "view_medida",
         ],
         "Planificador": ["add_plan", "change_plan", "delete_plan", "view_plan",
-                         "add_medida", "change_medida", "delete_medida", "view_medida",
+                         "add_planmedida", "change_planmedida", "delete_planmedida", "view_planmedida",
                          ],
-        "Agente": ["view_plan","view_medida","change_avance", "view_avance"],
-        "Lector": ["view_plan","view_medida", "view_avance"],
+        "Agente": ["view_plan","view_medida","change_reportemedida","add_reportemedida", "view_reportemedida"],
+        "Lector": ["view_plan","view_medida", "view_reportemedida"],
     }
 
     for role, permisos in roles.items():

@@ -144,7 +144,9 @@ class ReporteMedida(models.Model):
 
     medida = models.OneToOneField(PlanMedida, on_delete=models.CASCADE, help_text='Medida')
     fecha = models.DateField()
-    medio_verificacion = models.FileField(upload_to='reportes/')
+    medio_verificacion = models.CharField(max_length=200, blank=True, null=True) #models.FileField(upload_to='reportes/')
     #estado = models.CharField(max_length=50, choices=["validado", "no validado"], default="no validado")
     observaciones = models.CharField(max_length=200, blank=True, null=True)
-    
+
+    def __str__(self):
+        return self.medida.medida.nombre + "-" + str(self.fecha)

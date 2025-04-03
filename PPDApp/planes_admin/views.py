@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.text import normalize_newlines
 from rest_framework.permissions import DjangoModelPermissions
-from .permissions import DjangoModelPermissionsWithView
+from .permissions import DjangoModelPermissionsWithRead, EsMismoOrganismo
 
 from .models import *
 from .forms import *
@@ -49,7 +49,7 @@ class PlanMedidaViewSet(viewsets.ModelViewSet):
 class ReporteMedidaViewSet(viewsets.ModelViewSet):
     queryset = ReporteMedida.objects.all()
     serializer_class = ReporteMedidaSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, EsMismoOrganismo]
     #authentication_classes = [BasicAuthentication]
 
 @extend_schema(

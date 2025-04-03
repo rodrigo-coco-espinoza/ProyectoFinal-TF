@@ -20,6 +20,12 @@ from planes_admin.urls import *
 from django.contrib import admin
 from django.urls import path, include
 
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+from django.urls import path
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('planes_admin/', include('planes_admin.urls')),
@@ -27,6 +33,9 @@ urlpatterns = [
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('user/', include('user.urls')),
-    path('api/', include('planes_admin.urls'))
-
+    path('api/', include('planes_admin.urls')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+
+
