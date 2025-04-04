@@ -12,7 +12,7 @@ from django.http import JsonResponse, Http404
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from django.contrib.auth.decorators import login_required,permission_required
-from .permissions import DjangoModelPermissionsWithView
+from .permissions import DjangoModelPermissionsWithRead
 
 #Import forms
 from .forms import *
@@ -21,7 +21,7 @@ from .forms import *
 from rest_framework import viewsets, permissions
 from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -35,13 +35,13 @@ from rest_framework.response import Response
 class PlanViewSet(viewsets.ModelViewSet):
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
-    permission_classes = [DjangoModelPermissionsWithView]
+    permission_classes = [DjangoModelPermissionsWithRead]
     authentication_classes = [BasicAuthentication]
 
 class MedidaViewSet(viewsets.ModelViewSet):
     queryset = Medida.objects.all()
     serializer_class = MedidaSerializer
-    permission_classes = [DjangoModelPermissionsWithView]
+    permission_classes = [DjangoModelPermissionsWithRead]
     authentication_classes = [BasicAuthentication]
 
 class OrganismoViewSet(viewsets.ModelViewSet):
@@ -65,8 +65,9 @@ class ReporteMedidaViewSet(viewsets.ModelViewSet):
 class ReporteMedidaCreateOnlyViewSet(viewsets.ModelViewSet):
     queryset = ReporteMedida.objects.all()
     serializer_class = ReporteMedidaSerializer
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
     http_method_names = ['post']  # Solo permite POST
+    permission_classes = [IsAuthenticated, EsMismoOrganismo]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

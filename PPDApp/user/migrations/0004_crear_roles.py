@@ -32,7 +32,7 @@ def eliminar_roles(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("user", "0002_remove_usuario_is_aprobador_and_more"),
+        ("user", "0001_initial"),
     ]
 
     operations = [

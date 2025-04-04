@@ -1,7 +1,4 @@
 from rest_framework.permissions import BasePermission, DjangoModelPermissions
-import json
-from django.forms.models import model_to_dict
-
 
 class DjangoModelPermissionsWithRead(DjangoModelPermissions):
     perms_map = {
