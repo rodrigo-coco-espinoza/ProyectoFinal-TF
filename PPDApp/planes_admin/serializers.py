@@ -7,6 +7,11 @@ class MedidaSerializer(serializers.ModelSerializer):
         model = Medida
         fields = '__all__'
 
+class ReporteMedidaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReporteMedida
+        fields = '__all__'
+
 class PlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plan
@@ -22,7 +27,7 @@ class OrganismoSerializer(serializers.ModelSerializer):
         model = Organismo
         fields = '__all__'
 
-class ReporteMedidaSerializer(serializers.ModelSerializer):
+class PlanMedidaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ReporteMedida
+        model = PlanMedida
         fields = '__all__'
