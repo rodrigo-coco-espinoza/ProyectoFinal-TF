@@ -21,3 +21,8 @@ class OrganismoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organismo
         fields = '__all__'
+
+class ReporteMedidaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReporteMedida
+        fields = '__all__'
