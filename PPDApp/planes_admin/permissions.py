@@ -18,26 +18,19 @@ class DjangoModelPermissionsWithRead(DjangoModelPermissions):
 
 class EsMismoOrganismo(BasePermission):
     """
-    Permite la edición solo si el usuario pertenece al mismo organismo que el objeto Medida.
+    Permite la edición solo si el usuario pertenece al mismo organismo que el objeto PlanMedida.
     """
 
     def has_permission(self, request, view):
-        # Permitir lectura a todos
-        if request.method in ['GET', 'HEAD', 'OPTIONS']:
-            return True
-
         # Verificar si el usuario está autenticado
         if not request.user.is_authenticated:
             return False
+        # Permitir lectura a todos
 
-        # Obtener 'planmedida_id' del cuerpo de la solicitud
-        request_json = json.dumps(request.data, indent=4)
-
-        # Imprimir el JSON en la consola
-        print(request_json)
+        if request.method in ['GET', 'HEAD', 'OPTIONS']:
+            return True
 
         planmedida_id = request.data.get("medida")
-        print("Permisos:" + str(request.user.organismo) + "--" + planmedida_id)
         if not planmedida_id:
             return False  # No se puede insertar sin referencia a PlanMedida
 
@@ -47,17 +40,9 @@ class EsMismoOrganismo(BasePermission):
             plan_medida = PlanMedida.objects.get(id=planmedida_id)
         except PlanMedida.DoesNotExist:
             return False
-        plan_medida_dict = model_to_dict(plan_medida)
 
-        # Convertir a JSON
-        print(json.dumps(plan_medida_dict, indent=4))
-
-        print(str(request.user.organismo) +" == "+ json.dumps(plan_medida.__dict__, indent=4))
         # Comparar el organismo del usuario con el del PlanMedida
         return request.user.organismo == plan_medida.organismo
-
-        #print(request.user.organismo +"=="+ obj.medida.organismo)
-        #return request.user.organismo == obj.medida.organismo
 
 
 

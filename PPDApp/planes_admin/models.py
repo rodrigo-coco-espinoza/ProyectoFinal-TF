@@ -110,6 +110,8 @@ class PlanMedida(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     medida = models.ForeignKey(Medida, on_delete=models.CASCADE)
     periodo = models.IntegerField(validators=[MinValueValidator(2020)], help_text="Año de ejecución de la medida", null=True, blank=True)
+    organismo = models.ForeignKey(Organismo, on_delete=models.CASCADE,
+                                  help_text='Organismo sectorial responsable de reportar la medida')
 
     def __str__(self):
         return self.plan.nombre + " - " + self.medida.nombre

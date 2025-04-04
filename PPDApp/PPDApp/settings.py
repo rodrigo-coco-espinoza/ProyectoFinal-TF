@@ -152,3 +152,7 @@ SPECTACULAR_SETTINGS = {
     'ENABLE_DOCSTRINGS': True,
     'SCHEMA_PATH_PREFIX': '',
 }
+
+SIMPLE_JWT = {
+    'USER_ID_FIELD': 'email',  # O 'email' si usas autenticación por correo
+}
