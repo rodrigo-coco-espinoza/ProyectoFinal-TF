@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.text import normalize_newlines
 from rest_framework.permissions import DjangoModelPermissions
 from .permissions import DjangoModelPermissionsWithRead, EsMismoOrganismo
+from drf_spectacular.utils import extend_schema
 
 from .models import *
 from .forms import *
@@ -11,11 +12,20 @@ from django.http import JsonResponse, Http404
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from django.contrib.auth.decorators import login_required,permission_required
+from .permissions import DjangoModelPermissionsWithView
 
+#Import forms
+from .forms import *
+
+#Django rest framework
 from rest_framework import viewsets, permissions
+from rest_framework import status
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import Plan, Organismo, Medida, PlanMedida
+from .models import *
 from .serializers import PlanSerializer, OrganismoSerializer, MedidaSerializer, PlanMedidaSerializer, ReporteMedidaSerializer
 
 from rest_framework.permissions import IsAuthenticated
@@ -25,14 +35,14 @@ from rest_framework.response import Response
 class PlanViewSet(viewsets.ModelViewSet):
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
-    permission_classes = [IsAuthenticated]
-    #authentication_classes = [BasicAuthentication]
+    permission_classes = [DjangoModelPermissionsWithView]
+    authentication_classes = [BasicAuthentication]
 
 class MedidaViewSet(viewsets.ModelViewSet):
     queryset = Medida.objects.all()
     serializer_class = MedidaSerializer
-    permission_classes = [IsAuthenticated]
-    #authentication_classes = [BasicAuthentication]
+    permission_classes = [DjangoModelPermissionsWithView]
+    authentication_classes = [BasicAuthentication]
 
 class OrganismoViewSet(viewsets.ModelViewSet):
     queryset = Organismo.objects.all()
@@ -51,6 +61,23 @@ class ReporteMedidaViewSet(viewsets.ModelViewSet):
     serializer_class = ReporteMedidaSerializer
     permission_classes = [IsAuthenticated, EsMismoOrganismo]
     #authentication_classes = [BasicAuthentication]
+
+class ReporteMedidaCreateOnlyViewSet(viewsets.ModelViewSet):
+    queryset = ReporteMedida.objects.all()
+    serializer_class = ReporteMedidaSerializer
+    parser_classes = [MultiPartParser, FormParser]
+    http_method_names = ['post']  # Solo permite POST
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response({
+                'mensaje': 'Reporte guardado correctamente',
+                'data': serializer.data
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @extend_schema(
     summary="Página de inicio",

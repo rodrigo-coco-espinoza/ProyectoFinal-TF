@@ -34,8 +34,9 @@ urlpatterns = [
     path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('user/', include('user.urls')),
     path('api/', include('planes_admin.urls')),
+    path('api/', include('planes_admin.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
-
+]

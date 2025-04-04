@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#Extension para conectarse con la base de datos
+.env
+
 # C extensions
 *.so
 
