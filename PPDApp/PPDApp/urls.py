@@ -28,7 +28,7 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('planes_admin/', include('planes_admin.urls')),
+    path('planes_admin/', include('planes_admin.urls')),
     path('', home),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
     path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
