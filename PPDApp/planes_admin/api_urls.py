@@ -10,7 +10,7 @@ router = DefaultRouter()
 router.register(r'plans', PlanViewSet)
 router.register(r'medidas', MedidaViewSet)
 router.register(r'organismos', OrganismoViewSet)
-router.register(r'comuna', ComunaViewSet)
+router.register(r'comunas', ComunaViewSet)
 #router.register(r'reporte', ReporteMedidaViewSet)
 router.register(r'reporte-medida', ReporteMedidaCreateOnlyViewSet)
 
