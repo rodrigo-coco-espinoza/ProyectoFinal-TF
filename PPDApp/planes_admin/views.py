@@ -13,6 +13,7 @@ from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from django.contrib.auth.decorators import login_required,permission_required
 from .permissions import DjangoModelPermissionsWithRead
+from drf_spectacular.openapi import AutoSchema
 
 #Import forms
 from .forms import *
@@ -26,43 +27,114 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import *
-from .serializers import PlanSerializer, OrganismoSerializer, MedidaSerializer, PlanMedidaSerializer, ReporteMedidaSerializer
+from .serializers import *
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+
+class ComunaViewSet(viewsets.ModelViewSet):
+    """
+    API para gestionar los planes de descontaminación ambiental.
+
+    Métodos:
+    - `GET /comuna/`: Lista todos las comunas de descontaminación ambiental.
+    - `POST /comuna/`: Crea una nueva comuna de descontaminación ambiental.
+    - `PUT /comuna/{id}/`: Actualiza una comuna de descontaminación ambiental.
+    - `DELETE /comuna/{id}/`: Elimina una comuna de descontaminación ambiental.
+    """
+    schema = AutoSchema()
+    queryset = Comuna.objects.all()
+    serializer_class = ComunaSerializer
+    permission_classes = [DjangoModelPermissionsWithRead]
+    # authentication_classes = [BasicAuthentication]
+
+
+
 class PlanViewSet(viewsets.ModelViewSet):
+    """
+    API para gestionar los planes de descontaminación ambiental.
+
+    Métodos:
+    - `GET /plans/`: Lista todos los planes de descontaminación ambiental.
+    - `POST /plans/`: Crea un nuevo plan de descontaminación ambiental.
+    - `PUT /plans/{id}/`: Actualiza un plan de descontaminación ambiental.
+    - `DELETE /plans/{id}/`: Elimina un plan de descontaminación ambiental.
+    """
+    schema = AutoSchema()
     queryset = Plan.objects.all()
     serializer_class = PlanSerializer
     permission_classes = [DjangoModelPermissionsWithRead]
-    authentication_classes = [BasicAuthentication]
+    #authentication_classes = [BasicAuthentication]
 
 class MedidaViewSet(viewsets.ModelViewSet):
+    """
+    API para gestionar las medidas de planes de descontaminación ambiental.
+
+    Métodos:
+    - `GET /medidas/`: Lista todas las medidas.
+    - `POST /medidas/`: Crea una nueva medida.
+    - `PUT /medidas/{id}/`: Actualiza una medida.
+    - `DELETE /medidas/{id}/`: Elimina una medida.
+    """
+    schema = AutoSchema()
     queryset = Medida.objects.all()
     serializer_class = MedidaSerializer
     permission_classes = [DjangoModelPermissionsWithRead]
-    authentication_classes = [BasicAuthentication]
+    #authentication_classes = [BasicAuthentication]
 
 class OrganismoViewSet(viewsets.ModelViewSet):
+    """
+    API para gestionar los Organismos Sectoriales.
+
+    Métodos:
+    - `GET /plans/`: Lista todos los organismos sectoriales.
+    - `POST /plans/`: Crea un nuevo organismo sectorial.
+    - `PUT /plans/{id}/`: Actualiza un organismo sectorial.
+    - `DELETE /plans/{id}/`: Elimina un organismo sectorial.
+    """
+    schema = AutoSchema()
     queryset = Organismo.objects.all()
     serializer_class = OrganismoSerializer
     permission_classes = [IsAuthenticated]
     #authentication_classes = [BasicAuthentication]
 
 class PlanMedidaViewSet(viewsets.ModelViewSet):
+    """
+    API para gestionar la relación entre planes y medidas.
+
+    """
+    schema = AutoSchema()
     queryset = PlanMedida.objects.all()
     serializer_class = PlanMedidaSerializer
     permission_classes = [IsAuthenticated]
     #authentication_classes = [BasicAuthentication]
 
 class ReporteMedidaViewSet(viewsets.ModelViewSet):
+    """
+    API para gestionar los reportes de avance de las medidas de un plan..
+
+    Métodos:
+    - `GET /reporte-medida/`: Lista todos los reportes de medidas.
+    - `POST /reporte-medida/`: Crea un reporte de medida.
+    - `PUT /reporte-medida/{id}/`: Actualiza un reporte de medida.
+    - `DELETE /reporte-medida/{id}/`: Elimina un reporte de medida.
+    """
+    schema = AutoSchema()
     queryset = ReporteMedida.objects.all()
     serializer_class = ReporteMedidaSerializer
     permission_classes = [IsAuthenticated, EsMismoOrganismo]
     #authentication_classes = [BasicAuthentication]
 
 class ReporteMedidaCreateOnlyViewSet(viewsets.ModelViewSet):
+    """
+    API sólo para la creación del reporte de una medida.
+
+    Métodos:
+    - POST: Crea un reporte de una medida.
+    """
+    schema = AutoSchema()
     queryset = ReporteMedida.objects.all()
     serializer_class = ReporteMedidaSerializer
     parser_classes = [MultiPartParser, FormParser, JSONParser]
@@ -94,15 +166,10 @@ def home(request):
     """
     return render(request, 'home.html')
 
+
 @extend_schema(
-    summary="Agregar un nuevo plan",
-    description="Endpoint para agregar un nuevo plan mediante una solicitud POST.",
-    request=agregar_plan_form,  # Esquema del formulario para la solicitud.
-    responses={200: {"type": "string", "example": "Plan agregado correctamente"}}
-)
-@extend_schema(
-    summary="Listar planes",
-    description="Devuelve una lista de todos los planes en formato JSON.",
+    summary="Listar planes. (Obsoleto)",
+    description="Devuelve una lista de todos los planes en formato HTML. (Obsoleto)",
     responses={
         200: {
             "type": "array",
@@ -137,12 +204,19 @@ def lista_plan(request):
 
     return render(request, 'lista_plan.html', {'page_obj': page_obj})
 
+@extend_schema(
+    summary="Listar las medidas asociadas a un plan. (Obsoleto)",
+    description="Endpoint para listar las medidas asociadas a un plan.(Obsoleto)",
+    request=agregar_plan_form,  # Esquema del formulario para la solicitud.
+    responses={200: {"type": "array"}}
+
+)
 @login_required
 @permission_required('user.crear_plan', raise_exception=True)
 @api_view(['GET'])
 def detalle_plan(request, pk=None):
     """
-    Devuelve una lista de todos los planes.
+    Devuelve una lista de todas las medidas de los planes.
 
     Args:
         request (Request): Solicitud HTTP.
@@ -164,6 +238,12 @@ def detalle_plan(request, pk=None):
 
     return redirect('/planes_admin/ver_planes/')
 
+@extend_schema(
+    summary="Agregar un nuevo plan. (Obsoleto)",
+    description="Endpoint para agregar un nuevo plan mediante una solicitud POST. (Obsoleto)",
+    request=agregar_plan_form,  # Esquema del formulario para la solicitud.
+    responses={200: {"type": "string", "example": "Plan agregado correctamente"}}
+)
 @login_required
 @permission_required('user.crear_plan', raise_exception=True)
 @api_view(['GET', 'POST'])
@@ -187,6 +267,12 @@ def agregar_plan(request):
 
 # @login_reuired exije que el usuario este conectado para acceder a la vista, si no da error
 # @permission_required exije ademas que el usuario tenga el permiso indicado, los permisos estan en user/models.py
+@extend_schema(
+    summary="Agregar medida. (Obsoleto)",
+    description="Endpoint para agregar una nueva medida mediante una solicitud POST. (Obsoleto)",
+    request=agregar_medida_form,  # Esquema del formulario para la solicitud.
+    responses={200: {"type": "string", "example": "Medida agregada correctamente"}}
+)
 @login_required
 @permission_required('user.crear_plan', raise_exception=True)
 @api_view(['GET', 'POST'])

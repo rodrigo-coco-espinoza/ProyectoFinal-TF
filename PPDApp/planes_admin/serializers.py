@@ -31,3 +31,8 @@ class PlanMedidaSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlanMedida
         fields = '__all__'
+
+class ComunaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comuna
+        fields = '__all__'
