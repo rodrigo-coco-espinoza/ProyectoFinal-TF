@@ -3,7 +3,7 @@
 ## Descripción General del Sistema 
 ### Visión del Producto
 **¿Qué estamos creando?**  
-Una plataforma electrónica para el registro y reporte de fiscalización y seguimiento de los Planes de Prevención y Descontaminación Ambiental (PPDA) en Concón, Quintero y Puchuncaví. Integrará sistemas de información de organismos sectoriales como la SMA, promoviendo transparencia y cumplimiento normativo.
+Una plataforma electrónica para el registro y reporte de fiscalización y seguimiento de los Planes de Prevención y Descontaminación Ambiental (PPDA), basándonos en el PPDA de Concón, Quintero y Puchuncaví. Esta plataforma integrará sistemas de información de organismos sectoriales como la SMA, promoviendo transparencia y cumplimiento normativo.
 
 ## Relación con el Seguimiento de Medidas PPDA
 
@@ -24,10 +24,30 @@ La plataforma facilitará la recopilación y monitoreo de los avances en las med
 - virtualenv version 20.27.1
 - pip version 25.0
 - git bash 2.44.0
-- Dependencias: (requerimientos en requirements.txt).Este proyecto requiere las siguientes librerías de Python:
+- Dependencias: requerimientos se encuentran en requirements.txt. Este proyecto requiere las siguientes librerías de Python:
+  ```bash
+   asgiref==3.8.1
+   attrs==25.3.0
+   Django==5.1.5
+   djangorestframework==3.15.2
+   djangorestframework_simplejwt==5.5.0
+   drf-spectacular==0.28.0
+   inflection==0.5.1
+   jsonschema==4.23.0
+   jsonschema-specifications==2024.10.1
+   psycopg2==2.9.10
+   PyJWT==2.9.0
+   python-decouple==3.8
+   PyYAML==6.0.2
+   referencing==0.36.2
+   rpds-py==0.24.0
+   sqlparse==0.5.3
+   typing_extensions==4.13.1
+   uritemplate==4.1.1
+  ```
 
 ### Instalación
-1. Clona el repositorio:
+1. Clonar el repositorio:
    ```bash
     git clone https://github.com/rodrigo-coco-espinoza/ProyectoFinal-TF.git
    cd ProyectoFinal-TF
@@ -44,12 +64,14 @@ La plataforma facilitará la recopilación y monitoreo de los avances en las med
 4. Navegar a carpeta PPDApp
    ```bash
    cd  PPDApp
+   
 5. Migrar la base de datos
    ```bash
    python manage.py makemigrations
-   python manage.py migrate
    python manage.py migrate auth  
-   python manage.py migrate contenttypes  
+   python manage.py migrate contenttypes
+   python manage.py migrate
+     
 6. Ejecutar el servidor
    ```bash
    python manage.py runserver
@@ -120,6 +142,7 @@ La segunda entrega contempla funcionalidades clave para el seguimiento de los Pl
 - Registro de reportes de avance por medida, con fecha, archivo y observaciones.
 - Cálculo automático del porcentaje de avance por plan según medidas reportadas.
 - Estructura del proyecto en Django.
+- Incorporación de autenticación JWT y roles de usuarios.
 - Documentación parcial de la API a través de Swagger.
 
 ## Proyecciones a futuro
