@@ -27,11 +27,30 @@ from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import *
-from .serializers import PlanSerializer, OrganismoSerializer, MedidaSerializer, PlanMedidaSerializer, ReporteMedidaSerializer
+from .serializers import *
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+
+class ComunaViewSet(viewsets.ModelViewSet):
+    """
+    API para gestionar los planes de descontaminación ambiental.
+
+    Métodos:
+    - `GET /comuna/`: Lista todos las comunas de descontaminación ambiental.
+    - `POST /comuna/`: Crea una nueva comuna de descontaminación ambiental.
+    - `PUT /comuna/{id}/`: Actualiza una comuna de descontaminación ambiental.
+    - `DELETE /comuna/{id}/`: Elimina una comuna de descontaminación ambiental.
+    """
+    schema = AutoSchema()
+    queryset = Comuna.objects.all()
+    serializer_class = ComunaSerializer
+    permission_classes = [DjangoModelPermissionsWithRead]
+    # authentication_classes = [BasicAuthentication]
+
+
 
 class PlanViewSet(viewsets.ModelViewSet):
     """
