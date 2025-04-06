@@ -64,15 +64,24 @@ La plataforma facilitará la recopilación y monitoreo de los avances en las med
 4. Navegar a carpeta PPDApp
    ```bash
    cd  PPDApp
-   
-5. Migrar la base de datos
+
+5. Crear una base de datos Postgres y crear un archivo .env con los datos de conexion a la nueva base de datos
+  ```bash
+  DB_NAME=[Nombre BD creada]
+  DB_USER=[Usuario, generalmente postgres]
+  DB_PASSWORD=[password usuario postgres]
+  DB_HOST=[IP base de datos postgres, puede sel localhost]
+  DB_PORT=[puerto base de datos postgres, usualmete 5432]
+
+6. Migrar la base de datos
    ```bash
-   python manage.py makemigrations
    python manage.py migrate auth  
    python manage.py migrate contenttypes
-   python manage.py migrate
-     
-6. Ejecutar el servidor
+   python manage.py migrate --fake-initial
+
+7- (Opcional) Hacer un restore en la base de datos para cargar los usuarios de prueba con sus permisos listos para probar la aplicacion. Hay que usar el archivo dump-usuarios.sql
+
+8. Ejecutar el servidor
    ```bash
    python manage.py runserver
 
