@@ -49,7 +49,7 @@ La plataforma facilitará la recopilación y monitoreo de los avances en las med
 ### Instalación
 1. Clonar el repositorio:
    ```bash
-    git clone https://github.com/rodrigo-coco-espinoza/ProyectoFinal-TF.git
+   git clone https://github.com/rodrigo-coco-espinoza/ProyectoFinal-TF.git
    cd ProyectoFinal-TF
    
 2. Crear y activar entorno virtual
@@ -75,11 +75,16 @@ La plataforma facilitará la recopilación y monitoreo de los avances en las med
 
 6. Migrar la base de datos
    ```bash
-   python manage.py migrate auth  
    python manage.py migrate contenttypes
-   python manage.py migrate --fake-initial
+   python manage.py migrate auth  
+   python manage.py migrate
 
-7- (Opcional) Hacer un restore en la base de datos para cargar los usuarios de prueba con sus permisos listos para probar la aplicacion. Hay que usar el archivo dump-usuarios.sql
+Si falla el ultimo paso, ejecutar:
+   ```bash
+   python manage.py migrate --fake auth  
+   python manage.py migrate
+
+7- (Opcional) Para reliazar la demo, hacer un restore en la base de datos para cargar los usuarios de prueba con sus permisos listos para probar la aplicacion. Hay que usar el archivo Demo/dump-usuarios.sql, luego ejecutar el script Demo/changepw.ps1 para resetear las password de los usuarios y guardar las nuevas passwords para su uso posterior
 
 8. Ejecutar el servidor
    ```bash
