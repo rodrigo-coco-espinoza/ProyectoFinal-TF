@@ -146,15 +146,17 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # Configuración del esquema de la API
 SPECTACULAR_SETTINGS = {
     'TITLE': 'API de PPDA Manager',
-    'DESCRIPTION': 'Una API para gestionar Planes de Descontaminación Ambiental y visualización de sus estados de avance.',
+    'DESCRIPTION': 'API para gestionar Planes de Descontaminación Ambiental y seguimiento de sus estados de avance.',
     'VERSION': '1.0.0',
     'ENABLE_DOCSTRINGS': True,
     'SCHEMA_PATH_PREFIX': '',
+
 }
 
 SIMPLE_JWT = {

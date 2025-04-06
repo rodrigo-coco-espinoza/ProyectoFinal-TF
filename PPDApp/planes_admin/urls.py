@@ -7,12 +7,14 @@ from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = DefaultRouter()
+
 # router.register(r'plans', PlanViewSet)
 # router.register(r'medidas', MedidaViewSet)
 # router.register(r'organismos', OrganismoViewSet)
 # router.register(r'comuna', ComunaViewSet)
 # #router.register(r'reporte', ReporteMedidaViewSet)
 # router.register(r'reporte-medida', ReporteMedidaCreateOnlyViewSet)
+
 
 urlpatterns = [
     path('', include(router.urls)),
