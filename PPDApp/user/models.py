@@ -6,7 +6,25 @@ from django.db import models
 from planes_admin.models import Organismo
 
 class UsuarioManager(BaseUserManager):
+    """
+    Representa al administrador de usuarios.
+
+    Métodos:
+    - create_user: Crea un usuario en la base de datos.
+    - create_superuser: Crea un super usuario en la base de datos.
+    """
     def create_user(self, email, password=None, **extra_fields):
+        """
+        Crea usuario en la base de datos
+
+        Atributos:
+            - email (str): Correo electrónico del usuario.
+            - password (str): Contraseña del usuario.
+            - extra_fields: Campos con información extra del usuario.
+
+        Retorno:
+            usuario object.
+        """
         if not email:
             raise ValueError('El email es obligatorio')
         email = self.normalize_email(email)
@@ -16,12 +34,37 @@ class UsuarioManager(BaseUserManager):
         return usuario
 
     def create_superuser(self, email, password=None, **extra_fields):
+        """
+        Crea un superusuario con permisos de administrador.
+
+        Atributos:
+            - email (str): Correo electrónico del usuario.
+            - password (str): Contraseña del usuario.
+            - extra_fields: Campos con información extra del usuario.
+
+        Retorno:
+            Usuario object.
+        """
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
         return self.create_user(email, password, **extra_fields)
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
+    """
+    Representa un usuario del sistema.
+
+    Campos:
+        - email (str): Correo electrónico del usuario.
+        - nombre (str): Nombre del usuario.
+        - apellido (str): Apellido del usuario.
+        - is_active (bool): Estado de vigencia del usuario.
+        - is_staff (bool): Estado de pertenencia al grupo administrador.
+        - clave_unica (str): Clave única del usuario.
+        - organismo (int): Identificador del organismo sectorial al que pertenece el
+        usuario.
+    """
+
     list_display = ('email', 'nombre', 'apellido')
 
     email = models.EmailField(unique=True)
