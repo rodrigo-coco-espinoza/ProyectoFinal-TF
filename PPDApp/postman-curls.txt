@@ -1,0 +1,41 @@
+curl --location --request GET 'http://127.0.0.1:8000//api/comuna/' \
+--header 'Authorization: Bearer <AUTH TOKEN>' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode '='
+
+curl --location 'http://127.0.0.1:8000//api/token/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"email": "admin@ppda.com",
+    "password": "EvxQIdXqk0FX"
+}'
+
+curl --location 'http://127.0.0.1:8000//api/token/refresh/' \
+--header 'Content-Type: application/json' \
+--data '{
+	"refresh": "<REFRESH TOKEN>"
+}'
+
+curl --location 'http://127.0.0.1:8000//api/token/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"email": "dga@ppda.cl",
+    "password": "nhVorHNcNpHH"
+}'
+
+curl --location 'http://127.0.0.1:8000//api/token/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"email": "seremi@ppda.cl",
+    "password": "mXZ3lmdzd4HN"
+}'
+
+curl --location 'http://127.0.0.1:8000//api/reporte-medida/' \
+--header 'Authorization: Bearer <AUTH TOKEN>' \
+--header 'Content-Type: application/json' \
+--data '{"fecha":"2025-03-02",
+"medio_verificacion":"reporte2.txt",
+"medida":"2"}
+'
+
+
