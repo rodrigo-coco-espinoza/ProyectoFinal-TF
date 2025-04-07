@@ -123,8 +123,8 @@ Contamos con una Wiki colaborativa que contiene lo siguiente :
 
 - Product Vision Board
 - Modelo de proyecto (models.py)
-- 
-- 
+- Tabla de permisos
+- Modelo 
 
 Puedes acceder a la Wiki aquí:  
 [Wiki del Proyecto](https://tree.taiga.io/project/jsanmart-registro-actividades-ppda/wiki/home)
@@ -146,6 +146,7 @@ Contamos con una documentación interactiva de nuestra API implementada con Swag
 Para ver una demostración funcional del proyecto, puedes consultar el siguiente enlace al video de YouTube:
 
  https://youtu.be/4n6RrgtvVvA (Primera entrega)
+ https://youtu.be/FVTzeA-jDE4 (Segunda entrega)
 
 ## Alcances funcionales de la primera y segunda entrega
 
