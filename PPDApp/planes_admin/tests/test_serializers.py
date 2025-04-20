@@ -1,131 +1,61 @@
 from datetime import date
+from django.db import IntegrityError
 
 import pytest
 from rest_framework.exceptions import ValidationError
 
-from myapp.models import Autor, Libro
-from myapp.serializers import AutorSerializer, LibroSerializer
+from planes_admin.models import *
+from planes_admin.serializers import *
 
 
 @pytest.mark.django_db
-class TestAutorSerializer:
+class TestPlanSerializer:
     @pytest.fixture
-    def autor_data(self):
+    def plan_data(self):
         return {
             "nombre": "Gabriel",
-            "apellido": "García Márquez",
-            "fecha_nacimiento": "1927-03-06",
-            "biografia": "Escritor colombiano, premio Nobel de Literatura",
+            "anio": 2025,
+            "resolucion": "1927-03-06",
         }
 
-    def test_serializar_autor(self, autor_data):
-        serializer = AutorSerializer(data=autor_data)
+    def test_serializar_plan(self, plan_data):
+        serializer = PlanSerializer(data=plan_data)
         assert serializer.is_valid()
-        autor = serializer.save()
-        assert autor.nombre == autor_data["nombre"]
-        assert autor.apellido == autor_data["apellido"]
-        assert str(autor.fecha_nacimiento) == autor_data["fecha_nacimiento"]
-        assert autor.biografia == autor_data["biografia"]
+        plan = serializer.save()
+        assert plan.nombre == plan_data["nombre"]
+        assert plan.anio == plan_data["anio"]
+        assert plan.resolucion == plan_data["resolucion"]
 
-    def test_serializar_autor_sin_fecha_nacimiento(self):
-        data = {"nombre": "Gabriel", "apellido": "García Márquez"}
-        serializer = AutorSerializer(data=data)
-        assert serializer.is_valid()
-        autor = serializer.save()
-        assert autor.fecha_nacimiento is None
-        assert autor.biografia == ""
+    def test_serializar_plan_sin_anio(self):
 
-    def test_validacion_nombre_max_length(self, autor_data):
-        autor_data["nombre"] = "a" * 101  # Más del límite de 100 caracteres
-        serializer = AutorSerializer(data=autor_data)
+        data = {"nombre": "Gabriel", "resolucion": "García Márquez"}
+        serializer = PlanSerializer(data=data)
+        #plan = serializer.save()
+        with pytest.raises(ValidationError):
+            serializer.is_valid(raise_exception=True)
+
+
+    def test_validacion_nombre_max_length(self, plan_data):
+        plan_data["nombre"] = "a" * 101  # Más del límite de 100 caracteres
+        serializer = PlanSerializer(data=plan_data)
         assert not serializer.is_valid()
         assert "nombre" in serializer.errors
 
-    def test_validacion_apellido_max_length(self, autor_data):
-        autor_data["apellido"] = "a" * 101  # Más del límite de 100 caracteres
-        serializer = AutorSerializer(data=autor_data)
+    def test_validacion_resolucion_max_length(self, plan_data):
+        plan_data["resolucion"] = "a" * 51  # Más del límite de 100 caracteres
+        serializer = PlanSerializer(data=plan_data)
         assert not serializer.is_valid()
-        assert "apellido" in serializer.errors
+        assert "resolucion" in serializer.errors
 
-    def test_deserializar_autor(self):
-        autor = Autor.objects.create(
+    def test_deserializar_plan(self):
+        plan = Plan.objects.create(
             nombre="Gabriel",
-            apellido="García Márquez",
-            fecha_nacimiento=date(1927, 3, 6),
+            resolucion="García Márquez",
+            anio=2025,
         )
-        serializer = AutorSerializer(autor)
+        serializer = PlanSerializer(plan)
         data = serializer.data
-        assert data["nombre"] == autor.nombre
-        assert data["apellido"] == autor.apellido
-        assert data["fecha_nacimiento"] == "1927-03-06"
+        assert data["nombre"] == plan.nombre
+        assert data["resolucion"] == plan.resolucion
+        assert data["anio"] == 2025
 
-
-@pytest.mark.django_db
-class TestLibroSerializer:
-    @pytest.fixture
-    def autor(self):
-        return Autor.objects.create(nombre="Gabriel", apellido="García Márquez")
-
-    @pytest.fixture
-    def libro_data(self, autor):
-        return {
-            "titulo": "Cien años de soledad",
-            "fecha_publicacion": "1967-05-30",
-            "isbn": "9780307474728",
-            "descripcion": "Una obra maestra de la literatura latinoamericana",
-            "paginas": 417,
-            "autores": [autor.id],
-        }
-
-    def test_serializar_libro_sin_descripcion(self, autor):
-        data = {
-            "titulo": "Cien años de soledad",
-            "fecha_publicacion": "1967-05-30",
-            "isbn": "9780307474728",
-            "paginas": 417,
-            "autores": [autor.id],
-        }
-        serializer = LibroSerializer(data=data)
-        assert serializer.is_valid()
-        libro = serializer.save()
-        assert libro.descripcion == ""
-
-    def test_validacion_titulo_max_length(self, libro_data):
-        libro_data["titulo"] = "a" * 201  # Más del límite de 200 caracteres
-        serializer = LibroSerializer(data=libro_data)
-        assert not serializer.is_valid()
-        assert "titulo" in serializer.errors
-
-    def test_validacion_isbn_unico(self, libro_data):
-        # Crear un libro con el mismo ISBN
-        Libro.objects.create(
-            titulo="El amor en los tiempos del cólera",
-            fecha_publicacion=date(1985, 1, 1),
-            isbn=libro_data["isbn"],
-            paginas=368,
-        )
-        serializer = LibroSerializer(data=libro_data)
-        assert not serializer.is_valid()
-        assert "isbn" in serializer.errors
-
-    def test_validacion_paginas_positivas(self, libro_data):
-        libro_data["paginas"] = -1
-        serializer = LibroSerializer(data=libro_data)
-        assert not serializer.is_valid()
-        assert "paginas" in serializer.errors
-
-    def test_deserializar_libro(self, autor):
-        libro = Libro.objects.create(
-            titulo="Cien años de soledad",
-            fecha_publicacion=date(1967, 5, 30),
-            isbn="9780307474728",
-            paginas=417,
-        )
-        libro.autores.add(autor)
-        serializer = LibroSerializer(libro)
-        data = serializer.data
-        assert data["titulo"] == libro.titulo
-        assert data["fecha_publicacion"] == "1967-05-30"
-        assert data["isbn"] == libro.isbn
-        assert len(data["autores"]) == 1
-        assert data["autores"][0]["nombre"] == autor.nombre
