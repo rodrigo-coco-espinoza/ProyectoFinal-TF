@@ -58,6 +58,9 @@ class Plan (models.Model):
         medidas_validas = sum(1 for medida in self.planmedida_set.all() if hasattr(medida, 'reportemedida') and medida.reportemedida.medio_verificacion)
         return (medidas_validas / total_medidas) * 100
 
+    def __str__(self):
+        return self.nombre
+
 class Medida(models.Model):
     """
     Representa una medida de un PPDA.

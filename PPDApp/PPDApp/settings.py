@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import sys
 from pathlib import Path
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -85,6 +85,14 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
         'PORT': config('DB_PORT', default='5432'),
+    },
+    'migrate': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': "TestDB",
+        'USER': "postgres",
+        'PASSWORD': "1234",
+        'HOST': "localhost",
+        'PORT': '5432',
     }
 }
 
@@ -162,3 +170,5 @@ SPECTACULAR_SETTINGS = {
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'email',  # O 'email' si usas autenticación por correo
 }
+
+TESTING = any("pytest" in palabra for palabra in sys.argv)

@@ -1,10 +1,10 @@
+from django.conf import settings
 from django.db import migrations
-
 
 def crear_roles(apps, schema_editor):
     Group = apps.get_model("auth", "Group")
     Permission = apps.get_model("auth", "Permission")
-
+    print("Ejecutando pruebas...")
     roles = {
         "Administrador": ["add_comuna", "change_comuna", "delete_comuna", "view_comuna",
                           "add_organismo", "change_organismo", "delete_organismo", "view_organismo",
@@ -18,7 +18,7 @@ def crear_roles(apps, schema_editor):
                    "view_medida",
                    "view_planmedida",
                    "change_reportemedida","add_reportemedida", "view_reportemedida"],
-        "Lector": ["view_plan","view_medida", "view_reportemedida"],
+        "Lector": ["view_plan","view_medida", "view_planmedida", "view_reportemedida"],
     }
 
     for role, permisos in roles.items():
@@ -38,6 +38,13 @@ class Migration(migrations.Migration):
         ("user", "0001_initial"),
     ]
 
-    operations = [
-        migrations.RunPython(crear_roles, eliminar_roles),
-    ]
+    if settings.TESTING == True:
+
+        operations = []
+    else:
+        operations = [
+            migrations.RunPython(crear_roles, eliminar_roles),
+        ]
+    #operations = []
+
+
