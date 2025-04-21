@@ -2,6 +2,12 @@
 from django.shortcuts import render, redirect, get_object_or_404, Http404
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import Usuario
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+
+
 import json
 
 # Create your views here.
@@ -46,3 +52,10 @@ def actualizar_usuario(request, pk):
 
     except Http404:
         print('No se encontró el usuario')
+
+class UsuarioPermisosView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        permisos = list(request.user.get_all_permissions())
+        return Response({"permisos": permisos})

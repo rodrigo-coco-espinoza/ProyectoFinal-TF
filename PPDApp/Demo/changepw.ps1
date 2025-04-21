@@ -20,7 +20,7 @@ def generar_contrasena():
 
 for usuario in Usuario.objects.all():
     nueva_pass = generar_contrasena()
-    usuario.set_password(nueva_pass)
+    usuario.set_password('12345678')
     usuario.save()
     print(f""Contrasena generada para {usuario.email}: {nueva_pass}"")
 "@
