@@ -17,6 +17,15 @@ class PlanSerializer(serializers.ModelSerializer):
         model = Plan
         fields = '__all__'
 
+    def validate_nombre(self, value):
+        if len(value) > 100:
+            raise serializers.ValidationError("nombre")
+        return value
+    def validate_resolucion(self, value):
+        if len(value) > 50:
+            raise serializers.ValidationError("resolucion")
+        return value
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

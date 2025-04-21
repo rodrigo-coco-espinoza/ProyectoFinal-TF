@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+service PlanAdapterService{
+    // unary service
+    rpc get_plan(PlanID) returns (AdaptedPlan) {}
+}
+
+message PlanID{
+    string id = 1;
+}
+
+message AdaptedPlan{
+    string id = 1;
+    string nombre = 2;
+    string anio = 3;
+    string resolucion = 4;
+}
