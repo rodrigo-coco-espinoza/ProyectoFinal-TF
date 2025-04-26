@@ -8,6 +8,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -19,6 +33,16 @@ jobs:
           python -m pip install --upgrade pip
           cd PPDApp
           pip install -r requirements.txt
-      - name: Run tests
+      - name: Crear archivo .env
         run: |
+          echo "DB_NAME=test_db" >> PPDApp/.env
+          echo "DB_USER=postgres" >> PPDApp/.env
+          echo "DB_PASSWORD=postgres" >> PPDApp/.env
+          echo "DB_HOST=localhost" >> PPDApp/.env
+          echo "DB_PORT=5432" >> PPDApp/.env
+      - name: Run tests
+        working directory: PPDApp
+        env: DJANGO_SETTINGS_MODULE: PPDApp.settings_test
+        run: |
+          python manage.py migrate
           pytest --disable-warnings -q
